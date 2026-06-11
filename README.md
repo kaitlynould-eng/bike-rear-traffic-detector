@@ -1,6 +1,8 @@
 # bike-rear-traffic-detector
 
 ## Background
+
+TESTING DOXYGEN AUTO UPLOAD
 The purpose of this project is to assist a member of the team’s mom, Paula Ould. Paula was suddenly diagnosed in 2022 with a benign but hemorrhaging brain tumor. The tumor has since been successfully removed, but the process has limited her eyesight and degraded her motor function, rendering her legally unable to drive.
 Since the surgeries, she has purchased an e-trike from RadPower to safely travel short distances from her house. She has added a mirror to increase her field of vision and a flag for visibility, among other modifications. She is able to ride safely in low-traffic environments, but is still nervous about biking on busier roads or at busier times of day because it is harder for her to detect objects at the very edge of her peripherals or behind her.
 Therefore, our team’s goal is to create a system that detects and communicates the presence of rear oncoming traffic to Paula while she is on the road. This system is intended to act as an additional layer of information to support her existing safety measures, helping improve awareness and confidence, rather than encouraging riding in higher-risk conditions.
