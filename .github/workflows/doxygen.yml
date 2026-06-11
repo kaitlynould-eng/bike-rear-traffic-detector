@@ -1,4 +1,4 @@
-name: Generate Doxygen Docs
+name: Generate and Publish Doxygen Docs
 
 on:
   push:
@@ -6,24 +6,39 @@ on:
       - main
   pull_request:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   build-docs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-    - name: Install Doxygen
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y doxygen graphviz
+      - name: Install Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz
 
-    - name: Generate Documentation
-      run: doxygen Doxyfile
+      - name: Generate Documentation
+        run: doxygen Doxyfile
 
-    - name: Upload Documentation
-      uses: actions/upload-artifact@v4
-      with:
-        name: doxygen-html
-        path: html/
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: html/
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push'
+        uses: actions/deploy-pages@v4
