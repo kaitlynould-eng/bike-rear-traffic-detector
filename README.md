@@ -20,6 +20,12 @@ Rear-facing bicycle safety and rider awareness system using mmWave radar, an STM
 
 ## Overview
 
+<div align="center">
+    <img src="overallrealsystem.png" width="600">
+    <br>
+    <b>Figure 1:</b> Full prototype.
+</div>
+
 The hardware architecture of the rider-awareness system is centered around a custom printed circuit board that integrates sensing, processing, power regulation, and haptic feedback subsystems into a compact assembly suitable for bicycle use. The system is powered by a 2-cell lithium-ion battery pack and is designed to operate reliably in a vibration-prone outdoor environment through the use of connectorized wiring harnesses, regulated power distribution, and mechanically secured components.
 
 A rear-facing TI IWR6843 mmWave radar module serves as the primary sensing device for detecting approaching vehicles and other rear hazards. An onboard BNO055 inertial measurement unit (IMU) provides orientation and motion data that allow the system to distinguish between riding and stationary conditions. Sensor data is processed by an STM32F411 microcontroller, which coordinates system operation and controls the rider notification subsystem.
@@ -28,7 +34,16 @@ Rider alerts are communicated through two handlebar-mounted vibration motors dri
 
 All electronic components except for the motors are housed within a custom 3D-printed enclosure mounted to the rear cargo rack of a substitute bicycle. Paula’s e-trike was unavailable during testing, and so the prototype enclosure will be updated in the future to match the geometry of the intended vehicle. The enclosure incorporates dedicated mounting features and attachment points to securely retain the PCB, battery, radar module, and associated wiring. During prototype testing, the enclosure was secured to a substitute bicycle using zip ties attached to a rear basket rack, providing a simple and robust mounting solution without requiring permanent modifications to the bicycle. Internal cable management and connectorized harnesses were used to minimize strain on electrical connections and improve serviceability. Motors were mounted to the bike by being pressed into small, ring-like fixtures that snapped onto each handlebar.
 
-PICTURE: enclosure and motor mount fixtures
+<div align="center">
+    <img src="enclosureCAD.png" width="600">
+    <br>
+    <b>Figure 1:</b> Enclosure design.
+</div>
+<div align="center">
+    <img src="motormountCAD.png" width="600">
+    <br>
+    <b>Figure 1:</b> Motor mount design.
+</div>
 
 The hardware is organized into six primary subsystems: power distribution, radar sensing, inertial measurement, haptic feedback, programming and debug interfaces, and wiring and harnessing. The following sections describe the design considerations and implementation details of each subsystem.
 
@@ -91,6 +106,12 @@ Each vibration motor is controlled by a dedicated Texas Instruments DRV2605L hap
 The haptic feedback subsystem converts processed radar and motion-sensing information into tactile alerts that can be easily interpreted by the rider. When the bicycle is moving and rear traffic is detected, the vibration motors generate alerts whose intensity varies according to the relative speed of the approaching object. This allows the rider to receive information about nearby traffic without the need to monitor a display or listen for audio cues. When the bicycle is stationary, the system instead provides a brief notification vibration to indicate the presence of approaching rear traffic.
 
 The vibration motors are housed within dedicated 3D-printed handlebar mounts positioned near the rider's hands to maximize perceptibility and ensure alerts can be detected even in noisy outdoor environments. By providing a direct tactile communication method, the haptic feedback subsystem serves as the primary interface between the rider-awareness system and the user.
+
+<div align="center">
+    <img src="motormountreal.png" width="600">
+    <br>
+    <b>Figure 1:</b> Motors mounted in 3D printed attachment.
+</div>
 
 ## Communications and Debug Interfaces
 
@@ -237,7 +258,7 @@ One of the most significant challenges involved the TI IWR6843 mmWave radar modu
 
 Establishing communication with the radar module proved more difficult than initially anticipated. Early testing indicated that the radar was powered correctly but was not transmitting usable data to the microcontroller. After extensive debugging, the team determined that the radar's hardware configuration switches and communication routing were not configured correctly. The system only began functioning once the appropriate communication path was routed from the PC USB connection through the radar's onboard interface and into the UART channels used by the microcontroller.
 
-Additional challenges arose from the radar connector itself. During the initial PCB design, it was assumed that the exposed header pins on the radar module provided access to the required communication signals. Later investigation revealed that the necessary interfaces were only available through the radar's J2 60-pin connector. Because this connector was incompatible with the existing PCB design and difficult to interface with directly, the team designed and manufactured a custom adapter PCB that broke out the required signals from the 60-pin connector to a JST-GH connector compatible with the main control board. This redesign required additional effort and cost but ultimately was able to cleanly interface between the two boards.
+Additional challenges arose from the radar connector itself. During the initial PCB design, it was assumed that the exposed header pins on the radar module provided access to the required communication signals. Later investigation revealed that the necessary interfaces were only available through the radar's J2 60-pin connector. Because this connector was incompatible with the existing PCB design and difficult to interface with directly, the team designed and manufactured a custom adapter PCB that broke out the required signals from the 60-pin connector to a JST-GH connector compatible with the main control board. This redesign required additional effort and cost but ultimately was able to cleanly interface between the two boards. See f3z files for full electronics designs.
 
 ## Detection Threshold Tuning
 
