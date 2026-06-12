@@ -204,4 +204,21 @@ The testing process began with the bicycle stationary to verify that the radar m
 
 
 # Lessons learned
-radar required configuration so take time.
+
+## Radar Configuration and Software Integration
+
+One of the most significant challenges involved the TI IWR6843 mmWave radar module. Unlike many sensors that function immediately after wiring and power-up, the radar required separate configuration through Texas Instruments software tools before it could begin transmitting useful data. This process was complicated by documentation inconsistencies and software version compatibility issues, as some referenced tools and resources were outdated. Significant time was spent identifying the correct software environment and configuration procedure before successful communication could be established. While the IWR6843 ultimately simplified system development by providing onboard target detection and processing, integrating the module required considerably more software configuration than initially anticipated. This highlighted the importance of evaluating not only sensor capabilities, but also the supporting software ecosystem, configuration procedures, and development tools associated with highly integrated hardware platforms.
+
+## Radar Communication and Hardware Interface Challenges
+
+Establishing communication with the radar module proved more difficult than initially anticipated. Early testing indicated that the radar was powered correctly but was not transmitting usable data to the microcontroller. After extensive debugging, the team determined that the radar's hardware configuration switches and communication routing were not configured correctly. The system only began functioning once the appropriate communication path was routed from the PC USB connection through the radar's onboard interface and into the UART channels used by the microcontroller.
+
+Additional challenges arose from the radar connector itself. During the initial PCB design, it was assumed that the exposed header pins on the radar module provided access to the required communication signals. Later investigation revealed that the necessary interfaces were only available through the radar's J2 60-pin connector. Because this connector was incompatible with the existing PCB design and difficult to interface with directly, the team designed and manufactured a custom adapter PCB that broke out the required signals from the 60-pin connector to a JST-GH connector compatible with the main control board. This redesign required additional effort and cost but ultimately was able to cleanly interface between the two boards.
+
+## Detection Threshold Tuning
+
+While the radar was capable of reliably detecting objects, determining appropriate detection thresholds required substantial experimentation. Multiple rounds of testing were performed to tune velocity and distance thresholds for the intended bicycle environment. Thresholds that were too sensitive resulted in unnecessary detections, while overly restrictive settings reduced warning time and awareness for approaching vehicles. Through iterative testing and refinement, the team identified operating parameters that provided reliable detection performance while minimizing false alerts. This process demonstrated the importance of real-world testing when developing sensor-based systems.
+
+## Power Management and Demonstration Readiness
+
+A final challenge occurred immediately prior to the project demonstration when the primary battery pack had discharged to approximately 6.2 V. The reduced battery voltage resulted in unreliable system operation and required the team to quickly recharge the battery and prepare a backup power source shortly before the demonstration. Although the issue was resolved successfully, it emphasized the importance of power-management planning, battery monitoring, and pre-demonstration system checks.
