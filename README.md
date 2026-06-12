@@ -180,15 +180,6 @@ The radar communicates with the STM32 through two UART interfaces. A 115200 baud
 
 ## Configuration Development and Testing
 
-<div align="center">
-    <video width="800" controls>
-        <source src="demo.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-    <br>
-    <b>Video 1:</b> Final Project Demonstration.
-</div>
-
 A significant portion of the radar development process involved determining an appropriate configuration for the application. Texas Instruments provides a large number of configurable radar parameters that influence range resolution, velocity resolution, frame rate, transmit power, and target detection performance.
 
 To evaluate these parameters, the TI mmWave Demo Visualizer software was used extensively during development. This software provides real-time displays of radar point clouds, detected objects, and Doppler velocity information, allowing different configurations to be tested and compared quickly. Multiple configurations were evaluated to determine which settings provided the most reliable detection of approaching targets while minimizing false detections and unnecessary processing overhead.
@@ -240,6 +231,17 @@ The project is implemented in embedded C using the STM32 HAL framework. The soft
 Although the project does not use object-oriented programming or a real-time operating system, it incorporates many object-oriented design principles such as abstraction and encapsulation. Hardware-specific details are hidden inside each driver, exposing only simple public interfaces to the application layer. The overall system operates using an event-driven polling loop, where sensor inputs are continuously evaluated and used to determine the appropriate system response. This lightweight architecture is well suited for real-time embedded applications while remaining easy to understand and maintain.
 
 # Testing
+
+<div align="center">
+    <video width="800" controls>
+        <source src="demo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <br>
+    <b>Video 1:</b> Final Project Demonstration.
+</div>
+
+NOTE: If the video does not embed properly in your browser, please download demo.mp4 in the github repo to view the final testing.
 
 ## USB Debugging Interface
 
