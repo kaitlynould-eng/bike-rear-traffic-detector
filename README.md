@@ -109,8 +109,11 @@ The rider-awareness system utilizes a connectorized wiring architecture to distr
 Power is delivered from the battery pack to the PCB through dedicated high-current wiring sized to support the system load with minimal voltage drop. Lower-current sensor and communication connections use smaller-gauge wiring to reduce overall cable bulk and improve routing flexibility within the enclosure and along the bicycle frame. Wire gauges and connector selections were chosen based on expected current requirements, mechanical robustness, and ease of assembly.
 The design incorporates several connector families, including XT30, JST-XH, JST-GH, and standard header interfaces. Locking JST-GH connectors were selected for sensor and motor connections because they provide secure retention and are well suited for environments subject to vibration and movement. These connectors also allow subsystems to be disconnected individually for testing, replacement, or maintenance without requiring modification to the wiring harness.
 
-PICTURE: WIRING DIAGRAM
-
+<div align="center">
+    <img src="wiring diagram.png" width="600">
+    <br>
+    <b>Figure X:</b> Wiring Diagram.
+</div>
 The wiring architecture is divided into eight primary harnesses that connect the battery, power switch, radar module, inertial measurement unit, vibration motors, USB interface, and debugging hardware to the main control board. Each harness is documented with connector types, wire gauges, and signal assignments to support manufacturing, assembly, and future maintenance activities.
 
 Careful attention was given to harness routing within the enclosure and along the bicycle structure to minimize cable strain, prevent interference with moving components, and reduce excess wire length. Connector placement on the PCB was coordinated with enclosure layout to simplify assembly and improve serviceability. During prototype testing, harnesses were secured using cable management features and routing paths designed to prevent entanglement while maintaining access to critical system components.
