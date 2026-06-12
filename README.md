@@ -16,57 +16,84 @@ Rear-facing bicycle safety and rider awareness system using mmWave radar, an STM
 ## Overview
 
 The hardware architecture of the rider-awareness system is centered around a custom printed circuit board that integrates sensing, processing, power regulation, and haptic feedback subsystems into a compact assembly suitable for bicycle use. The system is powered by a 2-cell lithium-ion battery pack and is designed to operate reliably in a vibration-prone outdoor environment through the use of connectorized wiring harnesses, regulated power distribution, and mechanically secured components.
+
 A rear-facing TI IWR6843 mmWave radar module serves as the primary sensing device for detecting approaching vehicles and other rear hazards. An onboard BNO055 inertial measurement unit (IMU) provides orientation and motion data that allow the system to distinguish between riding and stationary conditions. Sensor data is processed by an STM32F411 microcontroller, which coordinates system operation and controls the rider notification subsystem.
+
 Rider alerts are communicated through two handlebar-mounted vibration motors driven by dedicated DRV2605L haptic motor driver ICs. This haptic feedback approach was selected to provide intuitive notifications without requiring the rider to divert visual attention from the road or rely on audible alerts that may be masked by environmental noise.
+
 All electronic components are housed within a custom 3D-printed enclosure mounted to the rear cargo rack of a substitute bicycle. Paula’s e-trike was unavailable during testing, and so the prototype enclosure will be updated in the future to match the geometry of the intended vehicle. The enclosure incorporates dedicated mounting features and attachment points to securely retain the PCB, battery, radar module, and associated wiring. During prototype testing, the enclosure was secured to a substitute bicycle using zip ties attached to a rear basket rack, providing a simple and robust mounting solution without requiring permanent modifications to the bicycle. Internal cable management and connectorized harnesses were used to minimize strain on electrical connections and improve serviceability.
+
 The hardware is organized into six primary subsystems: power distribution, radar sensing, inertial measurement, haptic feedback, programming and debug interfaces, and wiring and harnessing. The following sections describe the design considerations and implementation details of each subsystem.
 
 ## Power Distribution
 
 The power distribution system is responsible for converting and regulating battery power for all sensing, processing, and feedback electronics within the rider-awareness system. Power is supplied by a 2-cell lithium-ion battery pack with a nominal voltage of 7.4 V. Battery power enters the PCB through a connectorized interface and first passes through a 2 A resettable PTC fuse to provide overcurrent protection. A P-channel MOSFET configured for reverse-polarity protection prevents damage to the electronics if the battery is connected incorrectly.
+
 Following the protection circuitry, battery voltage is regulated by a TPS542025 switching buck converter configured to generate a 5 V power rail. A switching regulator was selected instead of a linear regulator to improve efficiency and reduce heat dissipation, which is especially important for a battery-powered system. The 5 V rail directly powers the TI IWR6843 mmWave radar module and serves as the input to the secondary voltage regulation stage.
+
 A NCP1117 low-dropout linear regulator generates a regulated 3.3 V rail from the 5 V supply. This rail powers all low-voltage digital electronics, including the STM32F411 microcontroller, BNO055 inertial measurement unit, and both DRV2605L haptic motor driver ICs. The use of a dedicated LDO provides a clean and stable supply for the digital and sensing subsystems while maintaining compatibility with the operating voltage requirements of these devices.
+
 To maintain power integrity throughout the system, bulk capacitance is placed at the outputs of both regulators, while local decoupling capacitors are located near integrated circuits and connector interfaces. These capacitors help suppress voltage transients, reduce switching noise, and ensure stable operation during dynamic load conditions such as radar operation and vibration motor actuation.
+
 Current consumption estimates indicate a steady-state 3.3 V load of approximately 202 mA, increasing to approximately 282 mA during vibration motor startup. The selected power architecture provides sufficient current capacity for all system components while maintaining efficient operation and protecting the electronics from common power-related faults.
 
 ## Radar Sensor
 
 Rear traffic detection is performed using a Texas Instruments IWR6843 mmWave radar module mounted at the rear of the bicycle enclosure. The radar operates in the 60 GHz frequency band and was selected for its ability to reliably detect and track moving objects under a wide range of environmental conditions. Unlike optical sensors or cameras, mmWave radar performance is largely unaffected by lighting conditions, shadows, glare, or moderate weather effects, making it well suited for bicycle safety applications.
+
 The radar module is powered from the regulated 5 V rail generated by the onboard power distribution system. Communication between the radar and the STM32F411 microcontroller is accomplished through dedicated UART interfaces. One UART connection is used for radar configuration and initialization, while a second UART interface is used to transmit processed target detection data to the microcontroller. Additional reset and GPIO signals are routed through the radar connector to support system control and status monitoring. The radar is connected to the PCB through a locking JST-GH harness to improve reliability in the vibration-prone bicycle environment.
+
 The radar is mounted within the rear enclosure and oriented to monitor traffic approaching from behind the rider. By continuously measuring target range, velocity, and relative motion, the sensor provides the primary situational-awareness input for the system. These measurements enable the rider-awareness system to identify approaching vehicles and generate appropriate haptic notifications through the handlebar vibration motors.
+
 The IWR6843 was selected because it combines a compact form factor with integrated signal processing capabilities and sufficient detection range for bicycle applications. Its ability to provide direct velocity measurements through Doppler processing is particularly valuable for distinguishing approaching vehicles from stationary roadside objects, reducing false detections and improving the relevance of rider alerts.
 
 ## Inertial Measurement Unit
 
 System motion and orientation are measured using a Bosch BNO055 inertial measurement unit (IMU). The BNO055 was selected because it integrates a 3-axis accelerometer, 3-axis gyroscope, and 3-axis magnetometer into a single package while also providing onboard sensor fusion. This reduces computational requirements on the STM32F411 microcontroller and simplifies the implementation of orientation and motion tracking.
+
 The IMU operates from the regulated 3.3 V power rail and communicates with the STM32F411 over an I²C interface. In addition to power, ground, and communication signals, a dedicated reset line is routed between the microcontroller and IMU to allow software-controlled reinitialization if necessary. The sensor is connected to the PCB through a locking JST-GH connector and wiring harness to ensure reliable operation in the vibration-prone bicycle environment.
+
 The primary purpose of the IMU is to determine whether the bicycle is in motion and to provide orientation information that can be used to improve system awareness. This information allows the system to differentiate between riding and stationary conditions, enabling different notification behaviors depending on the rider’s state. For example, approaching traffic while the bicycle is moving generates continuous haptic feedback, whereas approaching traffic while stopped generates a brief notification alert.
+
 The BNO055 was selected due to its integrated sensor-fusion capabilities, ease of implementation, and proven reliability in embedded motion-sensing applications. By providing stable orientation and acceleration data, the IMU serves as an important secondary sensing subsystem that complements the radar-based traffic detection system and improves the overall contextual awareness of the device.
 
 ## Haptic Feedback System
 
 Rider notifications are communicated through a dual-channel haptic feedback system consisting of two vibration motors mounted within the bicycle handlebars. Haptic feedback was selected as the primary alert method because it provides immediate and intuitive notifications without requiring the rider to divert visual attention from the road or rely on audible signals that may be masked by traffic noise or environmental conditions.
+
 Each vibration motor is controlled by a dedicated Texas Instruments DRV2605L haptic motor driver IC. The DRV2605L devices operate from the regulated 3.3 V power rail and communicate with the STM32F411 microcontroller over an I²C interface. Using dedicated driver ICs eliminates the need for the microcontroller to directly drive the motors and provides consistent vibration performance while reducing electrical stress on the control electronics. The motors are connected to the PCB through locking JST-GH connectors and dedicated wiring harnesses designed to withstand the vibration and movement encountered during bicycle operation.
+
 The haptic feedback subsystem converts processed radar and motion-sensing information into tactile alerts that can be easily interpreted by the rider. When the bicycle is moving and rear traffic is detected, the vibration motors generate alerts whose intensity varies according to the relative speed of the approaching object. This allows the rider to receive information about nearby traffic without the need to monitor a display or listen for audio cues. When the bicycle is stationary, the system instead provides a brief notification vibration to indicate the presence of approaching rear traffic.
+
 The vibration motors are housed within dedicated 3D-printed handlebar mounts positioned near the rider's hands to maximize perceptibility and ensure alerts can be detected even in noisy outdoor environments. By providing a direct tactile communication method, the haptic feedback subsystem serves as the primary interface between the rider-awareness system and the user.
 
 ## Communications and Debug Interfaces
 
 The rider-awareness system incorporates dedicated communication and debugging interfaces to support firmware development, testing, and troubleshooting. These interfaces provide access to the STM32F411 microcontroller for programming, debugging, and system monitoring throughout development.
+
 A Serial Wire Debug (SWD) header is included on the PCB to allow programming and real-time debugging of the STM32F411 microcontroller using an ST-Link debugger. The interface exposes the SWDIO, SWCLK, NRST, 3.3 V, and ground signals required for firmware upload, breakpoint debugging, memory inspection, and device recovery. This interface was used throughout development to validate sensor communication, test control algorithms, and diagnose hardware issues.
+
 In addition to the SWD interface, the PCB includes a USB Mini-B connector that provides a direct connection between the microcontroller and a host computer. The USB interface enables serial communication through a virtual COM port, allowing sensor data, diagnostic information, and system status messages to be monitored during testing and development. This connection simplifies system validation by providing a convenient method for observing device behavior and recording system outputs during operation.
+
 Together, the SWD and USB interfaces provide the primary tools used for firmware deployment, debugging, data collection, and system verification. Including both interfaces improved development efficiency and enabled thorough testing of the sensing, processing, and haptic feedback subsystems throughout the project lifecycle.
 
 ## Wiring and Harnessing
 
 The rider-awareness system utilizes a connectorized wiring architecture to distribute power and communication signals between the PCB and external subsystems. Because the system is intended for operation on a bicycle, wiring reliability and resistance to vibration were important design considerations throughout the development process. Connectorized harnesses simplify assembly, maintenance, and troubleshooting while reducing the likelihood of intermittent electrical connections caused by cable movement or vibration.
+
 Power is delivered from the battery pack to the PCB through dedicated high-current wiring sized to support the system load with minimal voltage drop. Lower-current sensor and communication connections use smaller-gauge wiring to reduce overall cable bulk and improve routing flexibility within the enclosure and along the bicycle frame. Wire gauges and connector selections were chosen based on expected current requirements, mechanical robustness, and ease of assembly.
 The design incorporates several connector families, including XT30, JST-XH, JST-GH, and standard header interfaces. Locking JST-GH connectors were selected for sensor and motor connections because they provide secure retention and are well suited for environments subject to vibration and movement. These connectors also allow subsystems to be disconnected individually for testing, replacement, or maintenance without requiring modification to the wiring harness.
+
 [Insert Figure X: System Wiring Diagram]
+
 The wiring architecture is divided into eight primary harnesses that connect the battery, power switch, radar module, inertial measurement unit, vibration motors, USB interface, and debugging hardware to the main control board. Each harness is documented with connector types, wire gauges, and signal assignments to support manufacturing, assembly, and future maintenance activities.
+
 [Insert Figure X: Harness Routing Overview]
+
 Careful attention was given to harness routing within the enclosure and along the bicycle structure to minimize cable strain, prevent interference with moving components, and reduce excess wire length. Connector placement on the PCB was coordinated with enclosure layout to simplify assembly and improve serviceability. During prototype testing, harnesses were secured using cable management features and routing paths designed to prevent entanglement while maintaining access to critical system components.
+
 [Insert Figure X: Individual Harness Diagrams (H1–H8)]
+
 Detailed harness documentation, including signal definitions, connector pinouts, wire gauges, and routing information for each cable assembly, is provided in the subsequent figures and tables.
 
 # Major Software
