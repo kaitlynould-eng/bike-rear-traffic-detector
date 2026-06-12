@@ -192,5 +192,16 @@ A custom debug_print() function was implemented to transmit diagnostic messages 
 
 The USB debugging interface was particularly valuable during integration testing, allowing rapid verification that the radar, IMU, and haptic subsystems were communicating correctly and producing the expected responses under different operating conditions.
 
+## Bike Testing
+The testing process began with the bicycle stationary to verify that the radar module could reliably detect approaching objects and trigger the appropriate haptic warnings. During these initial tests, both YIPPEE 1 and YIPPEE 2 activated as expected, demonstrating that the radar and warning system were functioning correctly. However, when testing was expanded to include a moving bicycle, the radar began detecting environmental objects such as bushes, resulting in unwanted activations. To address this issue, the detection range was modified to only consider objects between 1 m and 8.92 m from the bicycle. This adjustment significantly improved performance by filtering out very close detections while still providing adequate warning distance for approaching hazards. Additionally, a minimum velocity threshold of 0.1 m/s was implemented to reduce false detections caused by moving bushes or tree branches in windy conditions. Based on feedback from Paula regarding the level of warning she desired under different situations, the velocity ranges for the two warning modes were refined. YIPPEE 1 was configured to activate for approaching objects with velocities between 0.1 m/s and 2.2 m/s, representing lower-speed hazards such as pedestrians walking toward the cyclist. YIPPEE 2 was configured to activate for velocities greater than 2.2 m/s, representing faster-moving hazards that require increased awareness. As shown in Table 2, validation testing confirmed that YIPPEE 1 consistently activated when a person approached while walking, while YIPPEE 2 activated when a person approached on a skateboard. These results demonstrate that the system can distinguish between different levels of approaching hazards and provide an appropriate warning to the rider while minimizing false detections from surrounding environmental features.
+
+ Table 2. Testing Results
+| Trial | Approach Direction | Distance (m) | Bike Stationary | YIPPEE 1 Activated | YIPPEE 2 Activated | Bike Moving | YIPPEE 1 Activated | YIPPEE 2 Activated |
+|-------|--------------------|--------------|-----------------|-------------------|-------------------|-------------|-------------------|-------------------|
+| 1 | Left | 8.92 | Yes | Yes | Yes | Yes | Yes | Yes |
+| 2 | Center | 8.92 | Yes | Yes | Yes | Yes | Yes | Yes |
+| 3 | Right | 8.92 | Yes | Yes | Yes | Yes | Yes | Yes |
+
+
 # Lessons learned
 radar required configuration so take time.
