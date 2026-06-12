@@ -6,6 +6,8 @@ The purpose of this project is to assist a member of the team’s mom, Paula Oul
 Since the surgeries, she has purchased an e-trike from RadPower to safely travel short distances from her house. She has added a mirror to increase her field of vision and a flag for visibility, among other modifications. She is able to ride safely in low-traffic environments, but is still nervous about biking on busier roads or at busier times of day because it is harder for her to detect objects at the very edge of her peripherals or behind her.
 Therefore, our team’s goal is to create a system that detects and communicates the presence of rear oncoming traffic to Paula while she is on the road. This system is intended to act as an additional layer of information to support her existing safety measures, helping improve awareness and confidence, rather than encouraging riding in higher-risk conditions.
 
+PICTURE: PAULA
+
 
 ## Introduction
 
@@ -21,7 +23,9 @@ A rear-facing TI IWR6843 mmWave radar module serves as the primary sensing devic
 
 Rider alerts are communicated through two handlebar-mounted vibration motors driven by dedicated DRV2605L haptic motor driver ICs. This haptic feedback approach was selected to provide intuitive notifications without requiring the rider to divert visual attention from the road or rely on audible alerts that may be masked by environmental noise.
 
-All electronic components are housed within a custom 3D-printed enclosure mounted to the rear cargo rack of a substitute bicycle. Paula’s e-trike was unavailable during testing, and so the prototype enclosure will be updated in the future to match the geometry of the intended vehicle. The enclosure incorporates dedicated mounting features and attachment points to securely retain the PCB, battery, radar module, and associated wiring. During prototype testing, the enclosure was secured to a substitute bicycle using zip ties attached to a rear basket rack, providing a simple and robust mounting solution without requiring permanent modifications to the bicycle. Internal cable management and connectorized harnesses were used to minimize strain on electrical connections and improve serviceability.
+All electronic components except for the motors are housed within a custom 3D-printed enclosure mounted to the rear cargo rack of a substitute bicycle. Paula’s e-trike was unavailable during testing, and so the prototype enclosure will be updated in the future to match the geometry of the intended vehicle. The enclosure incorporates dedicated mounting features and attachment points to securely retain the PCB, battery, radar module, and associated wiring. During prototype testing, the enclosure was secured to a substitute bicycle using zip ties attached to a rear basket rack, providing a simple and robust mounting solution without requiring permanent modifications to the bicycle. Internal cable management and connectorized harnesses were used to minimize strain on electrical connections and improve serviceability. Motors were mounted to the bike by being pressed into small, ring-like fixtures that snapped onto each handlebar.
+
+PICTURE: enclosure and motor mount fixtures
 
 The hardware is organized into six primary subsystems: power distribution, radar sensing, inertial measurement, haptic feedback, programming and debug interfaces, and wiring and harnessing. The following sections describe the design considerations and implementation details of each subsystem.
 
@@ -203,7 +207,7 @@ The testing process began with the bicycle stationary to verify that the radar m
 | 3 | Right | <8.92 | Yes | Yes | Yes | Yes | Yes | Yes |
 
 
-# Lessons learned
+# Challenges & Lessons Learned
 
 ## Radar Configuration and Software Integration
 
