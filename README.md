@@ -184,7 +184,7 @@ Although the project does not use object-oriented programming or a real-time ope
 
 # Testing
 
-##USB Debugging Interface
+## USB Debugging Interface
 
 To simplify development and testing, the custom PCB includes a USB connection that enables direct communication between the STM32 microcontroller and a host computer. The project uses the STM32 USB CDC (Communications Device Class) interface to create a virtual serial port that can be accessed through terminal software such as PuTTY.
 
