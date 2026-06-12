@@ -110,7 +110,7 @@ Power is delivered from the battery pack to the PCB through dedicated high-curre
 The design incorporates several connector families, including XT30, JST-XH, JST-GH, and standard header interfaces. Locking JST-GH connectors were selected for sensor and motor connections because they provide secure retention and are well suited for environments subject to vibration and movement. These connectors also allow subsystems to be disconnected individually for testing, replacement, or maintenance without requiring modification to the wiring harness.
 
 <div align="center">
-    <img src="wiring diagram.png" width="600">
+    <img src="wiring diagram.jpg" width="600">
     <br>
     <b>Figure X:</b> Wiring Diagram.
 </div>
